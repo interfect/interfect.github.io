@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Markdown Notebook</title>
+
+<script src="lib/jquery-3.1.0.min.js"></script>
+<script src="lib/marked.min.js"></script>
+<script src="lib/prettify.min.js"></script>
+<script src="lib/bootstrap.min.js"></script>
+<link rel="stylesheet" href="lib/bootstrap-paper.min.css" />
+<!-- Override some Bootstrap stuff -->
+<link rel="stylesheet" href="lib/mdown-style.css" />
+<link rel="stylesheet" href="lib/strapdown.css" />
+<link rel="stylesheet" href="lib/interfect.css" />
+
+<!-- This might not be that useful to subscribe to, but it's super easy to have -->
+<link rel="alternate" type="application/atom+xml" href="https://github.com/interfect/interfect.github.io/commits/master.atom" title="Blog Commits"/>
+
+</head>
+<body>
+
+<!--
+We have a navbar!
+ -->
+<nav class="navbar navbar-default navbar-static-top"> 
+    <div class="container">
+        <!-- "header" has the brand and the expandy-buytton for tiny screens -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-options" aria-expanded="false">
+                <!-- Only screen readers need a text label -->
+                <span class="sr-only">Toggle navigation</span>
+                <!-- Screen lookers will see three horizontal bars -->
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/#!index.md">Markdown Notebook</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-options">
+            <!-- All the options live here so we can collapse them -->
+            <ul class="nav navbar-nav">
+                <li><a href="/#!index.md">Home</a></li>
+                <li><a href="/#!about.md">About</a></li>
+                <li><a href="/#!contact.md">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- This is what you will see if you try to use the super advanced Javascript web app without Javascript -->
+<noscript>
+    <div class="container" id="noscript-message">
+        <h1>Hello</h1>
+        <h3><a href="https://github.com/interfect/interfect.github.io/blob/master/index.md">View Pre-Rendered on Github</a></h3>
+        <p>Welcome to Markdown Notebook! Markdown Notebook is a blogging solution that renders Markdown documents client-side, in Javascript. Unfortunately, you don't appear to have Javascript enabled, and Markdown Notebook doesn't actually have any server-side code, which makes things a bit difficult.</p>
+        <p>If you don't want to turn on Javascript, take note of the filename after the "#" in your URL bar above, and find that file in <a href="https://github.com/interfect/interfect.github.io">this Github repository</a>, where you will be able to read it as formatted by Github. You can also browse that repository for interesting posts, or just clone it and look at it in your terminal if you prefer your Markdown unrendered.
+    </div>
+</noscript>
+
+<div class="container">
+    <!-- Here is where the rendered markdown goes -->
+    <div id="content" class="maintext col-lg-8"></div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-center footer-content">
+            Markdown Notebook
+        </p>
+    </div>
+</footer>
+
+<script>
+
+// Globals
+var titleStart = "Markdown Notebook - ";
+
+// set marked options
+marked.setOptions({
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: false,
+    pedantic: false,
+})
+
+// Turn off cacheing of markdown files because jQuery doesn't make requests and
+// check etags at all.
+$.ajaxSetup({
+    cache: false
+});
+
+// Do just enough of what strapdown does to stick markdown in an element.
+// Takes a markdown string and a target element
+function boltdown(markdown, target) {
+    // Hide the element
+    target.style.display = 'none';
+    
+    var html = marked(markdown);
+    target.innerHTML = html;
+
+    // Prettify
+    var codeEls = target.getElementsByTagName('code');
+    for (var i=0, ii=codeEls.length; i<ii; i++) {
+        var codeEl = codeEls[i];
+        var lang = codeEl.className;
+        codeEl.className = 'prettyprint lang-' + lang;
+    }
+    prettyPrint();
+
+    // Style tables
+    var tableEls = target.getElementsByTagName('table');
+    for (var i=0, ii=tableEls.length; i<ii; i++) {
+        var tableEl = tableEls[i];
+        tableEl.className = 'table table-striped table-bordered';
+    }
+    
+    // Style images
+    var imageEls = target.getElementsByTagName('img');
+    for (var i=0, ii=imageEls.length; i<ii; i++) {
+        var imageEl = imageEls[i];
+        // Images should be responsive
+        imageEl.className = 'img-responsive';
+    }
+    
+    // Show the element
+    target.style.display = '';
+}
+
+// Given an <a> DOM element, rewrite it to load markdown files in this viewer
+function rewriteLink(link) {
+    if(link.protocol == window.location.protocol &&
+        link.hostname == window.location.hostname &&
+        link.port == window.location.port &&
+        (link.pathname.toLowerCase().endsWith('.md') ||
+        link.pathname == window.location.pathname && link.hash != "")) {
+        // This is a relative link to a markdown file, or to a bare #hash in this document, and should open in this viewer
+        console.log('Rewriting:' + link.protocol + ', ' + link.hostname + ', ' +
+            link.port + ', ' + link.pathname + ', ' + link.hash)
+        if(link.pathname == window.location.pathname) {
+            // It's probably a relative link in this document
+            // Correct its path name to be to this markdown file, using the global filename.
+            link.pathname = filename
+        } else if(link.pathname.length > 0 && link.pathname[0] != '/') {
+            // It's a relative link, not relative to the root.
+            // Make it absolute based on the directory we're in.
+            link.pathname = dirname + link.pathname
+        }
+        
+        // Move its pathname into the hash with a shebang.
+        link.hash = '#!' + link.pathname + link.hash
+        // Make its pathname go here.
+        link.pathname = window.location.pathname
+        console.log('Rewritten link: ' + link.href)
+    } else {
+        console.log('Not rewriting: ' + link.protocol + ', ' + link.hostname + ', ' +
+            link.port + ', ' + link.pathname + ', ' + link.hash)
+        // Make everything else target="_blank", to cover up our lack of scroll
+        // restore support on back button press.
+        link.target="_blank"
+    }
+    
+    
+}
+
+// Render the given markdown file (root-relative path)
+function render(path) {
+    $.get(path, function(data) {
+        // Do the core of what Strapdown would do, and format the markdown into the content element.
+        boltdown(data, document.getElementById('content'))
+
+        // We want to fix up the page title
+        var titleEl = document.getElementsByTagName('title')[0]
+        // We'll pull from the first h1 on the page, if present
+        var docTitleEl = document.getElementsByTagName('h1')[0]
+        if(docTitleEl && titleEl) {
+            titleEl.innerHTML = titleStart + docTitleEl.innerHTML
+        }
+        
+        // Find and rewrite all the relative links to Markdown files to open in this viewer.
+        var links = document.getElementById('content').getElementsByTagName('a')
+        for (var i = 0; i < links.length; i++)
+            rewriteLink(links[i])
+    })
+}
+
+// Grab the hashbang (something like #!index.md#heading) and split into parts
+var parts = window.location.hash.substring(2).split("#")
+var filename = parts[0]
+// Split up the filename to get the directory name that the file lives in
+// See https://www.abeautifulsite.net/javascript-functions-for-basename-and-dirname
+var dirname = filename.match( /.*\// );
+var anchor = parts[1]
+if(filename.length > 0) {
+    // We have something to render
+    render(filename)
+    if(anchor && anchor.length > 0) {
+        // We have somewhere to go in the resulting document
+        var anchorElement = document.getElementById(anchor)
+        if(anchorElement) {
+            window.scrollTo(0, anchorElement.offsetTop)
+        }
+    }
+} else {
+    window.location.hash = '#!index.md'
+    window.location.reload()
+}
+
+window.onhashchange = function(){
+    var newParts = window.location.hash.substring(2).split("#")
+    var newFilename = newParts[0]
+    var newAnchor = newParts[1]
+    
+    if(newFilename != filename) {
+        // We are going to a new markdown file
+        window.location.reload()
+    } else if(newAnchor && newAnchor.length > 0) {
+        // Just seek in this one
+        var anchorElement = document.getElementById(newAnchor)
+        if(anchorElement) {
+            window.scrollTo(0, anchorElement.offsetTop)
+        }
+    }
+}
+
+</script>
+</body>
+</html>
