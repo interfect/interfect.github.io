@@ -2,17 +2,18 @@
 <html>
 
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Markdown Notebook</title>
 
 <script src="lib/jquery.min.js"></script>
 <script src="lib/marked.min.js"></script>
 <script src="lib/prettify.min.js"></script>
-<script src="lib/strapdown.js"></script>
 <script src="lib/params.js"></script>
 <link rel="stylesheet" href="lib/strapdown.css" />
 <link rel="stylesheet" href="lib/mdown-style.css" />
-<!-- Preload this so we don't get unstyled rendered markdown -->
+<!-- Don't use strapdown's theme applier. Do the CSS manually -->
 <link rel="stylesheet" href="lib/themes/paper.min.css" />
+<link rel="stylesheet" href="lib/strapdown.css" />
 </head>
 <body>
 
@@ -45,7 +46,9 @@ Also so that we can have useful blog-navigating links
     </div>
 </nav>
 
-<xmp id="markdown" theme="paper" style="display:none;"></xmp>
+<!-- Here is where the rendered markdown goes -->
+<div class="container" id="content"></div>
+<!-- This is what we see instead of that -->
 <h1 id="loading">Loading...</h1>
 
 <script>
@@ -61,6 +64,35 @@ marked.setOptions({
     breaks: false,
     pedantic: false,
 })
+
+// Do just enough of what strapdown does to stick markdown in an element.
+// Takes a markdown string and a target element
+function (markdown, target) {
+    // Hide the element
+    target.style.display = 'none';
+    
+    var html = marked(markdown);
+    target.innerHTML = html;
+
+    // Prettify
+    var codeEls = target.getElementsByTagName('code');
+    for (var i=0, ii=codeEls.length; i<ii; i++) {
+        var codeEl = codeEls[i];
+        var lang = codeEl.className;
+        codeEl.className = 'prettyprint lang-' + lang;
+    }
+    prettyPrint();
+
+    // Style tables
+    var tableEls = target.getElementsByTagName('table');
+    for (var i=0, ii=tableEls.length; i<ii; i++) {
+        var tableEl = tableEls[i];
+        tableEl.className = 'table table-striped table-bordered';
+    }
+    
+    // Show the element
+    target.style.display = '';
+}
 
 // Given an <a> DOM element, rewrite it to load markdown files in this viewer
 function rewriteLink(link) {
@@ -90,23 +122,15 @@ function rewriteLink(link) {
 
 // Render the given markdown file (root-relative path)
 function render(path) {
-    var xmp = document.getElementById("markdown")
-
-    // set theme first.
-    var theme = getParameterByName("theme")
-    if (theme && theme && theme.length > 0) {
-        $(xmp).attr('theme', theme)
-    }
-
     $.get(path, function(data) {
-        xmp.innerHTML = data
-        strapdown(window, document)
+        // Do the core of what Strapdown would do, and format the markdown into the content element.
+        boltdown(data, document.getElementById('content'))
 
         // We want to fix up the page title
         var titleEl = document.getElementsByTagName('title')[0]
         // We'll pull from the first h1 on the page, if present
         var docTitleEl = document.getElementsByTagName('h1')[0]
-        if(docTitleEl) {
+        if(docTitleEl && titleEl) {
             titleEl.innerHTML = titleStart + docTitleEl.innerHTML
         }
 
@@ -117,7 +141,6 @@ function render(path) {
         for (var i = 0; i < links.length; i++)
             rewriteLink(links[i])
     })
-  
 }
 
 // Grab the hashbang (something like #!index.md#heading) and split into parts
