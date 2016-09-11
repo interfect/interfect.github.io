@@ -20,7 +20,7 @@ Do our own navbar so that Strapdown won't insert one with the wrong class for th
 <div class="navbar navbar-static-top"> 
     <div class="navbar-inner">
         <div class="container">
-            <div id="headline" class="brand">
+            <div id="headline" class="navbar-brand">
                 Markdown Notebook
             </div>
         </div>
@@ -37,50 +37,95 @@ var titleStart = "Markdown Notebook - ";
 
 // set marked options
 marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
+    renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: false,
+    pedantic: false,
 })
 
 function render(path) {
-  var xmp = document.getElementById("markdown");
+    var xmp = document.getElementById("markdown")
 
-  // set theme first.
-  var theme = getParameterByName("theme")
-  if (theme && theme && theme.length > 0) {
-    $(xmp).attr('theme', theme)
-  }
-
-  $.get(path, function(data) {
-    xmp.innerHTML = data;
-    strapdown(window, document)
-    
-    // We want to fix up the page title
-    var titleEl = document.getElementsByTagName('title')[0]
-    // We'll pull from the first h1 on the page, if present
-    var docTitleEl = document.getElementsByTagName('h1')[0]
-    if(docTitleEl) {
-        titleEl.innerHTML = titleStart + docTitleEl.innerHTML
+    // set theme first.
+    var theme = getParameterByName("theme")
+    if (theme && theme && theme.length > 0) {
+        $(xmp).attr('theme', theme)
     }
-    
 
-    $('#loading').hide()
-  })
+    $.get(path, function(data) {
+        xmp.innerHTML = data
+        strapdown(window, document)
+
+        // We want to fix up the page title
+        var titleEl = document.getElementsByTagName('title')[0]
+        // We'll pull from the first h1 on the page, if present
+        var docTitleEl = document.getElementsByTagName('h1')[0]
+        if(docTitleEl) {
+            titleEl.innerHTML = titleStart + docTitleEl.innerHTML
+        }
+
+        $('#loading').hide()
+    })
 }
 
-var hash = window.location.hash.substring(1)
-if (hash.length > 0) {
-  render(hash)
+// Grab the hashbang (something like #!index.md#heading) and split into parts
+var parts = window.location.hash.substring(2).split("#")
+var filename = parts[0]
+// Split up the filename to get the directory name that the file lives in
+// See https://www.abeautifulsite.net/javascript-functions-for-basename-and-dirname
+var dirname = filename.match( /.*// );
+var anchor = parts[1]
+if (filename.length > 0) {
+    render(filename)
+    window.scrollTo(0, document.getElementById(anchor).offsetTop)
 } else {
-  window.location.hash = "#sample.md"
-  window.location.reload()
+    window.location.hash = "#!index.md"
+    window.location.reload()
 }
 
 window.onhashchange = function(){
-  window.location.reload()
+    var newParts = window.location.hash.substring(2).split("#")
+    var newFilename = newParts[0]
+    var newAnchor = newParts[1]
+    
+    if(newFilename != filename) {
+        // We are going to a new markdown file
+        window.location.reload()
+    } else {
+        // Just seek in this one
+        window.scrollTo(0, document.getElementById(newAnchor).offsetTop)
+    }
 }
+
+
+
+
+// TODO: can we fix up links so we can write "[foo](bar.md)" and get out "<a href="#!bar.md">foo</a>"?
+
+// Set up link handlers to fix markdown links to render right
+$('body').on('click', 'a', function(e) {
+    // Grab the a element as a DOM element
+    var link = e.target
+    
+    console.log(link)
+    
+    if(link.hostname == "" && link.port == "" && link.pathname != window.location.pathname) {
+        if(link.pathname.length > 0 && link.pathname[0] != "/") {
+            // It's a relative link, not relative to the root.
+            // Make it absolute based on the directory we're in.
+            link.pathname = dirname + link.pathname
+        }
+        
+        // Move its pathname into the hash with a shebang.
+        link.hash = "#!" + link.pathname + link.hash
+        // Make its pathname go here.
+        link.pathname = window.location.pathname
+    }
+    
+    console.log(link)
+});
+
 </script>
 </body>
 </html>
