@@ -14,10 +14,26 @@
 </head>
 <body>
 
+<!--
+Do our own navbar so that Strapdown won't insert one with the wrong class for the brand.
+ -->
+<div class="navbar navbar-static-top"> 
+    <div class="navbar-inner">
+        <div class="container">
+            <div id="headline" class="brand">
+                Markdown Notebook
+            </div>
+        </div>
+    </div>
+</div>
+
 <xmp id="markdown" theme="paper" style="display:none;"></xmp>
 <h1 id="loading">Loading...</h1>
 
 <script>
+
+// Globals
+var titleStart = "Markdown Notebook - ";
 
 // set marked options
 marked.setOptions({
@@ -40,11 +56,15 @@ function render(path) {
   $.get(path, function(data) {
     xmp.innerHTML = data;
     strapdown(window, document)
-
-    // fix the navbar
-    $('.navbar-fixed-top')
-      .addClass('navbar-static-top')
-      .removeClass('navbar-fixed-top')
+    
+    // We want to fix up the page title
+    var titleEl = document.getElementsByTagName('title')[0]
+    // We'll pull from the first h1 on the page, if present
+    var docTitleEl = document.getElementsByTagName('h1')[0]
+    if(docTitleEl) {
+        titleEl.innerHTML = titleStart + docTitleEl.innerHTML
+    }
+    
 
     $('#loading').hide()
   })
