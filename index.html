@@ -121,7 +121,10 @@ $('body').on('click', 'a', function(e) {
     
     console.log(link.href)
     
-    if(link.hostname == "" && link.port == "" && link.pathname != window.location.pathname) {
+    if(link.protocol == window.location.protocol &&
+        link.hostname == window.location.hostname &&
+        link.port == window.location.port &&
+        link.pathname != window.location.pathname) {
         consloe.log("Rewriting...")
         if(link.pathname.length > 0 && link.pathname[0] != "/") {
             // It's a relative link, not relative to the root.
