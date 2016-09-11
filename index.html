@@ -74,7 +74,7 @@ var parts = window.location.hash.substring(2).split("#")
 var filename = parts[0]
 // Split up the filename to get the directory name that the file lives in
 // See https://www.abeautifulsite.net/javascript-functions-for-basename-and-dirname
-var dirname = filename.match( /.*// );
+var dirname = filename.match( /.*\// );
 var anchor = parts[1]
 if (filename.length > 0) {
     render(filename)
