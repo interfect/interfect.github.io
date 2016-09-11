@@ -108,33 +108,16 @@ window.onhashchange = function(){
     }
 }
 
-
-
-
-// TODO: can we fix up links so we can write "[foo](bar.md)" and get out "<a href="#!bar.md">foo</a>"?
-
-// Set up link handlers to fix markdown links to render right
-$('body').on('click', 'a', function(e) {
-    // Grab the a element as a DOM element
-    var link = e.target
-    e.preventDefault();
-    
-    console.log(link.href)
-    
-    console.log(link.protocol)
-    console.log(link.hostname)
-    console.log(link.port)
-    console.log(link.pathname)
-    
-    console.log(window.location.protocol)
-    console.log(window.location.hostname)
-    console.log(window.location.port)
-    console.log(window.location.pathname)
+// Given an <a> DOM element, rewrite it to load markdown files in this viewer
+function rewriteLink(link) {
+    console.log("Original link: " + link.href)
     
     if(link.protocol == window.location.protocol &&
         link.hostname == window.location.hostname &&
         link.port == window.location.port &&
-        link.pathname != window.location.pathname) {
+        link.pathname != window.location.pathname &&
+        link.pathname.toLowerCase().endsWith(".md")) {
+        // This is a relative link to a markdown file, and should open in this viewer
         console.log("Rewriting...")
         if(link.pathname.length > 0 && link.pathname[0] != "/") {
             // It's a relative link, not relative to the root.
@@ -148,7 +131,17 @@ $('body').on('click', 'a', function(e) {
         link.pathname = window.location.pathname
     }
     
-    console.log(link.href)
+    console.log("Rewritten link: " + link.href)
+}
+
+// Set up link handlers to fix markdown links to render right
+$('body').on('click', 'a', function(e) {
+    // Grab the a element as a DOM element
+    var link = e.target
+    
+    // Rewrite its destination
+    rewriteLink(link)
+    
 });
 
 </script>
