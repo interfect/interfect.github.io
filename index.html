@@ -44,6 +44,33 @@ marked.setOptions({
     pedantic: false,
 })
 
+// Given an <a> DOM element, rewrite it to load markdown files in this viewer
+function rewriteLink(link) {
+    console.log('Original link: ' + link.href)
+    
+    if(link.protocol == window.location.protocol &&
+        link.hostname == window.location.hostname &&
+        link.port == window.location.port &&
+        link.pathname != window.location.pathname &&
+        link.pathname.toLowerCase().endsWith('.md')) {
+        // This is a relative link to a markdown file, and should open in this viewer
+        console.log('Rewriting...')
+        if(link.pathname.length > 0 && link.pathname[0] != '/') {
+            // It's a relative link, not relative to the root.
+            // Make it absolute based on the directory we're in.
+            link.pathname = dirname + link.pathname
+        }
+        
+        // Move its pathname into the hash with a shebang.
+        link.hash = '#!' + link.pathname + link.hash
+        // Make its pathname go here.
+        link.pathname = window.location.pathname
+    }
+    
+    console.log('Rewritten link: ' + link.href)
+}
+
+// Render the given markdown file (root-relative path)
 function render(path) {
     var xmp = document.getElementById("markdown")
 
@@ -67,6 +94,12 @@ function render(path) {
 
         $('#loading').hide()
     })
+    
+    // Find and rewrite all the relative links to Markdown files to open in this viewer.
+    var links = document.getElementsByTagName('a')
+    for (var i = 0; i < links.length; i++) {
+        rewriteLink(links[i]);
+    }​
 }
 
 // Grab the hashbang (something like #!index.md#heading) and split into parts
@@ -87,7 +120,7 @@ if(filename.length > 0) {
         }
     }
 } else {
-    window.location.hash = "#!index.md"
+    window.location.hash = '#!index.md'
     window.location.reload()
 }
 
@@ -107,42 +140,6 @@ window.onhashchange = function(){
         }
     }
 }
-
-// Given an <a> DOM element, rewrite it to load markdown files in this viewer
-function rewriteLink(link) {
-    console.log("Original link: " + link.href)
-    
-    if(link.protocol == window.location.protocol &&
-        link.hostname == window.location.hostname &&
-        link.port == window.location.port &&
-        link.pathname != window.location.pathname &&
-        link.pathname.toLowerCase().endsWith(".md")) {
-        // This is a relative link to a markdown file, and should open in this viewer
-        console.log("Rewriting...")
-        if(link.pathname.length > 0 && link.pathname[0] != "/") {
-            // It's a relative link, not relative to the root.
-            // Make it absolute based on the directory we're in.
-            link.pathname = dirname + link.pathname
-        }
-        
-        // Move its pathname into the hash with a shebang.
-        link.hash = "#!" + link.pathname + link.hash
-        // Make its pathname go here.
-        link.pathname = window.location.pathname
-    }
-    
-    console.log("Rewritten link: " + link.href)
-}
-
-// Set up link handlers to fix markdown links to render right
-$('body').on('click', 'a', function(e) {
-    // Grab the a element as a DOM element
-    var link = e.target
-    
-    // Rewrite its destination
-    rewriteLink(link)
-    
-});
 
 </script>
 </body>
