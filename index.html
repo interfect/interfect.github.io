@@ -11,15 +11,12 @@
 <script src="lib/bootstrap.min.js"></script>
 <link rel="stylesheet" href="lib/strapdown.css" />
 <link rel="stylesheet" href="lib/mdown-style.css" />
-<!-- Don't use strapdown's theme applier. Do the CSS manually -->
 <link rel="stylesheet" href="lib/bootstrap-paper.min.css" />
-<link rel="stylesheet" href="lib/strapdown.css" />
 </head>
 <body>
 
 <!--
-Do our own navbar so that Strapdown won't insert one with the wrong class for the brand.
-Also so that we can have useful blog-navigating links
+We have a navbar!
  -->
 <nav class="navbar navbar-default navbar-static-top"> 
     <div class="container">
@@ -137,7 +134,7 @@ function render(path) {
         $('#loading').hide()
         
         // Find and rewrite all the relative links to Markdown files to open in this viewer.
-        var links = document.getElementsByTagName('a')
+        var links = document.getElementById('content').getElementsByTagName('a')
         for (var i = 0; i < links.length; i++)
             rewriteLink(links[i])
     })
