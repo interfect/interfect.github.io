@@ -5,7 +5,7 @@ Markdown is super easy to use and is kind of the Official Language of the Intern
 
 Unfortunately, all of the Markdown blogging systems I found in my 5 minutes of searching were these opinionated beasts.
 
-**Jekyll](https://jekyllrb.com/)** is a Ruby-based system that doesn't, officially, run on Windows. It integrates well with Github Pages, but that integration is through ["A simple Ruby Gem to bootstrap dependencies for setting up and maintaining a local Jekyll environment in sync with GitHub Pages"](https://github.com/github/pages-gem), which seems to want you to turn your blog *itself* into a Ruby gem. It also comes with a command-line tool.
+**[Jekyll](https://jekyllrb.com/)** is a Ruby-based system that doesn't, officially, run on Windows. It integrates well with Github Pages, but that integration is through ["A simple Ruby Gem to bootstrap dependencies for setting up and maintaining a local Jekyll environment in sync with GitHub Pages"](https://github.com/github/pages-gem), which seems to want you to turn your blog *itself* into a Ruby gem. It also comes with a command-line tool.
 
 I don't want to write a Ruby gem; I want to write a blog. I thought I could just decide to blog with Jekyll on Github Pages and upload my Jekyll-styled Markdown and have Github build the pages for me. Maybe you can, but I couldn't figure out how to do it. All the tutorials start out with "install some Ruby gems and run this command to make a file structure to put your blog in".
 
