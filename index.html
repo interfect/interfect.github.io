@@ -18,16 +18,32 @@
 
 <!--
 Do our own navbar so that Strapdown won't insert one with the wrong class for the brand.
+Also so that we can have useful blog-navigating links
  -->
-<div class="navbar navbar-static-top"> 
-    <div class="navbar-inner">
-        <div class="container">
-            <div id="headline" class="navbar-brand">
-                Markdown Notebook
-            </div>
+<nav class="navbar navbar-static-top"> 
+    <!-- "header" has the brand and the expandy-buytton for tiny screens -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-options" aria-expanded="false">
+            <!-- Only screen readers need a text label -->
+            <span class="sr-only">Toggle navigation</span>
+            <!-- Screen lookers will see three horizontal bars -->
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand">
+            <a href="/#!/index.md">Markdown Notebook</a>
         </div>
     </div>
-</div>
+    <div class="collapse navbar-collapse" id="navbar-options">
+        <!-- All the options live here so we can collapse them -->
+        <ul class="nav navbar-nav">
+            <li><a href="/#!/index.md">Home</a></li>
+            <li><a href="/#!/about.md">About</a></li>
+            <li><a href="/#!/contact.md">Contact</a></li>
+        </ul>
+    </div>
+</nav>
 
 <xmp id="markdown" theme="paper" style="display:none;"></xmp>
 <h1 id="loading">Loading...</h1>
@@ -122,7 +138,7 @@ if(filename.length > 0) {
         }
     }
 } else {
-    window.location.hash = '#!index.md'
+    window.location.hash = '#!/index.md'
     window.location.reload()
 }
 
