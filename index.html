@@ -117,10 +117,12 @@ window.onhashchange = function(){
 $('body').on('click', 'a', function(e) {
     // Grab the a element as a DOM element
     var link = e.target
+    e.preventDefault();
     
     console.log(link.href)
     
     if(link.hostname == "" && link.port == "" && link.pathname != window.location.pathname) {
+        consloe.log("Rewriting...")
         if(link.pathname.length > 0 && link.pathname[0] != "/") {
             // It's a relative link, not relative to the root.
             // Make it absolute based on the directory we're in.
