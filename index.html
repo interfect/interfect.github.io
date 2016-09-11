@@ -46,8 +46,6 @@ We have a navbar!
 
 <!-- Here is where the rendered markdown goes -->
 <div class="container" id="content"></div>
-<!-- This is what we see instead of that -->
-<h1 id="loading">Loading...</h1>
 
 <script>
 
@@ -130,8 +128,6 @@ function render(path) {
         if(docTitleEl && titleEl) {
             titleEl.innerHTML = titleStart + docTitleEl.innerHTML
         }
-
-        $('#loading').hide()
         
         // Find and rewrite all the relative links to Markdown files to open in this viewer.
         var links = document.getElementById('content').getElementsByTagName('a')
