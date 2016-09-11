@@ -121,6 +121,16 @@ $('body').on('click', 'a', function(e) {
     
     console.log(link.href)
     
+    console.log(link.protocol)
+    console.log(link.hostname)
+    console.log(link.port)
+    console.log(link.pathname)
+    
+    console.log(window.location.protocol)
+    console.log(window.location.hostname)
+    console.log(window.location.port)
+    console.log(window.location.pathname)
+    
     if(link.protocol == window.location.protocol &&
         link.hostname == window.location.hostname &&
         link.port == window.location.port &&
