@@ -118,7 +118,7 @@ $('body').on('click', 'a', function(e) {
     // Grab the a element as a DOM element
     var link = e.target
     
-    console.log(link)
+    console.log(link.href)
     
     if(link.hostname == "" && link.port == "" && link.pathname != window.location.pathname) {
         if(link.pathname.length > 0 && link.pathname[0] != "/") {
@@ -133,7 +133,7 @@ $('body').on('click', 'a', function(e) {
         link.pathname = window.location.pathname
     }
     
-    console.log(link)
+    console.log(link.href)
 });
 
 </script>
