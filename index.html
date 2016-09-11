@@ -93,13 +93,13 @@ function render(path) {
         }
 
         $('#loading').hide()
-    })
-    
-    // Find and rewrite all the relative links to Markdown files to open in this viewer.
-    var links = document.getElementsByTagName('a')
-    for (var i = 0; i < links.length; i++)
-        rewriteLink(links[i])
         
+        // Find and rewrite all the relative links to Markdown files to open in this viewer.
+        var links = document.getElementsByTagName('a')
+        for (var i = 0; i < links.length; i++)
+            rewriteLink(links[i])
+    })
+  
 }
 
 // Grab the hashbang (something like #!index.md#heading) and split into parts
