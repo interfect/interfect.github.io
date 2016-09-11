@@ -79,7 +79,7 @@ var anchor = parts[1]
 if(filename.length > 0) {
     // We have something to render
     render(filename)
-    if(anchor.length > 0) {
+    if(anchor && anchor.length > 0) {
         // We have somewhere to go in the resulting document
         var anchorElement = document.getElementById(anchor)
         if(anchorElement) {
@@ -99,7 +99,7 @@ window.onhashchange = function(){
     if(newFilename != filename) {
         // We are going to a new markdown file
         window.location.reload()
-    } else if(newAnchor.length > 0) {
+    } else if(newAnchor && newAnchor.length > 0) {
         // Just seek in this one
         var anchorElement = document.getElementById(newAnchor)
         if(anchorElement) {
