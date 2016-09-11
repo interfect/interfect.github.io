@@ -93,15 +93,13 @@ function boltdown(markdown, target) {
 
 // Given an <a> DOM element, rewrite it to load markdown files in this viewer
 function rewriteLink(link) {
-    console.log('Original link: ' + link.href)
-    
     if(link.protocol == window.location.protocol &&
         link.hostname == window.location.hostname &&
         link.port == window.location.port &&
         link.pathname != window.location.pathname &&
         link.pathname.toLowerCase().endsWith('.md')) {
         // This is a relative link to a markdown file, and should open in this viewer
-        console.log('Rewriting...')
+        console.log('Rewriting: ' + link.href)
         if(link.pathname.length > 0 && link.pathname[0] != '/') {
             // It's a relative link, not relative to the root.
             // Make it absolute based on the directory we're in.
@@ -112,9 +110,10 @@ function rewriteLink(link) {
         link.hash = '#!' + link.pathname + link.hash
         // Make its pathname go here.
         link.pathname = window.location.pathname
+        console.log('Rewritten link: ' + link.href)
     }
     
-    console.log('Rewritten link: ' + link.href)
+    
 }
 
 // Render the given markdown file (root-relative path)
