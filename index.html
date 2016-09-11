@@ -76,9 +76,16 @@ var filename = parts[0]
 // See https://www.abeautifulsite.net/javascript-functions-for-basename-and-dirname
 var dirname = filename.match( /.*\// );
 var anchor = parts[1]
-if (filename.length > 0) {
+if(filename.length > 0) {
+    // We have something to render
     render(filename)
-    window.scrollTo(0, document.getElementById(anchor).offsetTop)
+    if(anchor.length > 0) {
+        // We have somewhere to go in the resulting document
+        var anchorElement = document.getElementById(anchor)
+        if(anchorElement) {
+            window.scrollTo(0, anchorElement.offsetTop)
+        }
+    }
 } else {
     window.location.hash = "#!index.md"
     window.location.reload()
@@ -92,9 +99,12 @@ window.onhashchange = function(){
     if(newFilename != filename) {
         // We are going to a new markdown file
         window.location.reload()
-    } else {
+    } else if(newAnchor.length > 0) {
         // Just seek in this one
-        window.scrollTo(0, document.getElementById(newAnchor).offsetTop)
+        var anchorElement = document.getElementById(newAnchor)
+        if(anchorElement) {
+            window.scrollTo(0, anchorElement.offsetTop)
+        }
     }
 }
 
