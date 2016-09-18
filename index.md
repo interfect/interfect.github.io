@@ -2,7 +2,7 @@
 
 This is my blog-like object, where I store all of my possibly useful notes.
 
-[1KGXwunhkg9zqxY6xKyF5RYYEZ6FNsd87o](bitcoin:1KGXwunhkg9zqxY6xKyF5RYYEZ6FNsd87o?amount=0.01) [![Give me Bitcoins.](/images/qr.png =10x)](/images/qr.png) [![Give me other currencies.](/images/shapeshift.svg =10x)](https://shapeshift.io/shifty.html?destination=1KGXwunhkg9zqxY6xKyF5RYYEZ6FNsd87o&output=BTC&amount=0.01)
+[1KGXwunhkg9zqxY6xKyF5RYYEZ6FNsd87o](bitcoin:1KGXwunhkg9zqxY6xKyF5RYYEZ6FNsd87o?amount=0.01) <a href="/images/qr.png"><img alt="Give me Bitcoins." src="/images/qr.png" width="10px"></a> <a href=">https://shapeshift.io/shifty.html?destination=1KGXwunhkg9zqxY6xKyF5RYYEZ6FNsd87o&output=BTC&amount=0.01"><img alt="Give me other currencies." src="/images/shapeshift.svg" width="10px"></a>
 
 ## Recent Posts
 
