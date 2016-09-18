@@ -9,7 +9,7 @@ As a Meshnet Enthusiast, I've grabbed a couple of WiFi routers (including a nice
 
 This document describes how I achieved these goals.
 
-##Design Compromises
+## Design Compromises
 
 To make the whole thing easier to build and run, I made some compromises.
 
@@ -17,19 +17,19 @@ First, the WiFi setup consists of Access Points and Clients; I'm not trying to r
 
 Second, there's no WiFi- or IP-level mesh involved; everything is one big bridged network. In practice it's a bunch of WiFi stuff, but in theory it all works like a bunch of daisy-chained Ethernet switches. Any "mesh" that may or may not be in this "meshnet" is provided by cjdns running over the top of everything. Nodes that can't run cjdns see a boring, centralized, single-router network with a few switches in it.
 
-##Hardware Components
+## Hardware Components
 
 The system I have has three main pieces of hardware: a meshnet node on a server under my desk, a Ubiquiti Nanostation WiFi access point outside, and a WRT54G to attach them together. Here is an aggressively terrible diagram of my network setup, made using MS Paint.
 
 ![A diagram showing the meshnet, my meshnet server node, a WRT54G, a PoE injector, and a Ubiquiti Nanostation connected together in that order.](/images/003/aggressively-terrible-diagram.png)
 
-###Meshnet Node
+### Meshnet Node
 
 The most important physical piece of the system is the full meshnet node. It lives under my desk, runs the [meshnet software](#cjdns-mesh-networking-software), and manages the network. It hands out IPv4 and private IPv6 addresses to clients when they connect, proxies their traffic through to the meshnet, *refuses* to proxy their traffic through to the Internet or the rest of my network, and does the web serving, DNS serving, and packet manipulation required to display the captive portal page that explains what the whole thing is about.
 
 The meshnet node server has a wired connection to the rest of my network, and a USB WiFi dongle with big beefy antennas plugged in to connect it to the wireless part of the system. Although it hands out IP addresses and routes traffic, the meshnet node is *not* the access point; its WiFi interface is operating as a client.
 
-###Access Point
+### Access Point
 
 The main access point in the system is a [Ubiquiti Nanostation locoM2](https://www.amazon.com/gp/product/B004EGI3CI/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&tag=interfect-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B004EGI3CI&linkId=23dade7a674144fe22776a7f5bc40fdf). (My blog is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to amazon.com. Gimme your money.) The access point is running, obviously, in Access Point mode, and broadcasts the main SSID that clients are supposed to connect to.
 
@@ -41,15 +41,15 @@ The other downside is that the Nanostation can only be powered by power-over-Eth
 
 In the end, I finally got the thing mounted and hooked up, broadcasting its SSID and bridging it with its Ethernet interface.
 
-###Extra Router
+### Extra Router
 
 After putting the main AP outside, facing away from my house, and then connecting to it from the other side of the house, the setup worked, but I got really low throughput. I attributed this to being exactly where the directional antenna in the AP wasn't pointing, and so I added an extra WRT54G router I had lying around to cover the inside of my house. The router has one of its LAN ports hooked up to the data port on the PoE injector, and bridges from Ethernet to another AP-mode WiFi SSID that I connect to from inside the house. Once I set that up, throughput improved dramatically.
 
-##Software Components
+## Software Components
 
 The Nanostation AP runs the stock Ubiquiti firmware, and the WRT54G runs a horribly old build of Tomato. All the software that really makes the system work runs on the meshnet node server itself.
 
-###cjdns Mesh Networking Software
+### cjdns Mesh Networking Software
 
 The most important sofware component is [cjdns](https://github.com/cjdelisle/cjdns#cjdns), which provides the mesh networking capability. Cjdns is used to connect the main meshnet node server to other systems on the Internet, as part of a mesh network. There are several useful services on this meshnet, including an IRC server, a free e-mail service, and [IPFS](https://ipfs.io). All addressing is IPv6, in the `fc00::/8` block reserved for [unique local addresses without a specified allocation method](https://en.wikipedia.org/wiki/IPv6_address#Unique_local_addresses). Cjdns allocates addresses by public key hash; all communication is end-to-end encrypted.
 
@@ -68,7 +68,7 @@ Cjdns is configured for Ethernet auto-peering on all interfaces, with this `ETHI
 
 This configures the cjdns daemon to send out raw broadcast Ethernet frames attempting to peer with other nodes on the local network, and accept such peering requests itself. This means that if any other similarly-configured cjdns nodes (like my laptop) connect to the meshnet WiFi network, they will automatically peer with the meshnet server node and have meshnet connectivity.
 
-###radvd IPv6 Router Advertisement Daemon
+### radvd IPv6 Router Advertisement Daemon
 
 Clients that don't run cjdns can still connect to meshnet hosts, by using the meshnet server as a NAT-ing IPv6 router. To this end, the system advertises a private IPv6 subnet of `fdfc::/64` to everyone who connects to the WiFi network.
 
@@ -86,7 +86,7 @@ interface wlan0 {
 };
 ```
 
-###WiFi Connectivity
+### WiFi Connectivity
 
 The meshnet server needs to actually be on the WiFi, with an address on the `fdfc::/64` subnet, in order to do anything. So here's `/etc/network/interfaces`:
 
@@ -114,7 +114,7 @@ network={
 }
 ```
 
-###DHCP Server
+### DHCP Server
 
 In order to explain to people what sort of network they're connected to, I need some kind of captive portal, which will redirect web pages (over IPv4) to a welcome page. Unlike real captive portals, I don't eventually end up granting Internet access, so there's no need to make the captivating functionality turn on and off.
 
@@ -136,17 +136,17 @@ There's also this in `/etc/default/isc-dhcp-server` to actually turn it on:
 INTERFACES="wlan0"
 ```
 
-###DNS Server
+### DNS Server
 
 The DHCP server refers clients back to the same host as a DNS server, and I need a DNS server that can answer requests if I want the captive portal to work. Additionally, a lot of meshnet services keep their hostnames in normal DNS, and don't necessarily work if accessed just by IPv6 in the URL bar, so meshnet clients are going to want access to Internet DNS too.
 
 I just installed `bind`, in its default configuration, to act as a DNS server and proxy requests through to the system's configured DNS servers.
 
-###Web server
+### Web server
 
 The captive portal needs to involve a web page that people see when they connect. I installed `apache2` and set up a simple `index.html` explaining what the meshnet is and why people shouldn't just immediately disconnect and look for a real Internet network.
 
-###iptables Forwarding, Blocking, and Captive Portal-ing
+### iptables Forwarding, Blocking, and Captive Portal-ing
 
 The meshnet server is set up to route traffic between a local IPv6 subnet and the cjdns meshnet, using IPv6 NAT. This is accomplished by turning on IPv6 forwarding (by setting `net.ipv6.conf.all.forwarding=1` in `/etc/sysctl.conf`) and then placing the following in `/etc/rc.local`:
 
@@ -176,7 +176,7 @@ This only works if `net.ipv4.ip_forward=1` is set in `/etc/sysctl.conf`, to enab
 
 It's worth noting, also, that the meshnet server does not have Internet IPv6 connectivity. If it did, I would want to drop IPv6 packets between the WiFi network and the Internet as well.
 
-##Shortcomings and Improvements
+## Shortcomings and Improvements
 
 Right now, the system mostly works: people will get IPv4 and IPv6 addresses when they connect, they can access meshnet sites through the IPv6 NATing proxy if they don't have cjdns, they get cjdns auto-peering if they do have cjdns, and if they get confused there's an obvious web page explaining what's going on. However, there are still a few places where the system could be improved:
 
