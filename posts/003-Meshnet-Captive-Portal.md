@@ -15,7 +15,7 @@ To make the whole thing easier to build and run, I made some compromises.
 
 First, the WiFi setup consists of Access Points and Clients; I'm not trying to run it in the poorly-supported, poorly-documented Ad-Hoc mode which in theory would make things so much nicer but in practice makes them so much worse. The upshot is that Android clients can connect, but the downside is that you can't just stand up more clients and let them extend the network. If you want to make it bigger, you have to do manual configuration, and separate out the network that the APs use to talk to each other from the network that they use to talk to the clients.
 
-Second, there's no WiFi- or IP-level mesh involved; everything is one big bridged network. In practice it's a bunch of Wi-Fi stuff, but in theory it all works like a bunch of daisy-chained Ethernet switches. Any "mesh" that may or may not be in this "meshnet" is provided by cjdns running over the top of everything. Nodes that can't run cjdns see a boring, centralized, single-router network with a few switches in it.
+Second, there's no WiFi- or IP-level mesh involved; everything is one big bridged network. In practice it's a bunch of WiFi stuff, but in theory it all works like a bunch of daisy-chained Ethernet switches. Any "mesh" that may or may not be in this "meshnet" is provided by cjdns running over the top of everything. Nodes that can't run cjdns see a boring, centralized, single-router network with a few switches in it.
 
 ##Hardware Components
 
@@ -23,7 +23,7 @@ The system I have has three main pieces of hardware: a meshnet node on a server 
 
 ###Meshnet Node
 
-The most important physical piece of the system is the full meshnet node. It lives under my desk, runs the [meshnet software](#cjdns-mesh-metworking-software), and manages the network. It hands out IPv4 and private IPv6 addresses to clients when they connect, proxies their traffic through to the meshnet, *refuses* to proxy their traffic through to the Internet or the rest of my network, and does the web serving, DNS serving, and packet manipulation required to display the captive portal page that explains what the whole thing is about.
+The most important physical piece of the system is the full meshnet node. It lives under my desk, runs the [meshnet software](#cjdns-mesh-networking-software), and manages the network. It hands out IPv4 and private IPv6 addresses to clients when they connect, proxies their traffic through to the meshnet, *refuses* to proxy their traffic through to the Internet or the rest of my network, and does the web serving, DNS serving, and packet manipulation required to display the captive portal page that explains what the whole thing is about.
 
 The meshnet node server has a wired connection to the rest of my network, and a USB WiFi dongle with big beefy antennas plugged in to connect it to the wireless part of the system. Although it hands out IP addresses and routes traffic, the meshnet node is *not* the access point; its WiFi interface is operating as a client.
 
@@ -41,7 +41,7 @@ In the end, I finally got the thing mounted and hooked up, broadcasting its SSID
 
 ###Extra Router
 
-After putting the main AP outside, facing away from my house, and then connecting to it from the other side of the house, the setup worked, but I got really low througput. I attributed this to being exactly where the directional antenna in the AP wasn't pointing, and so I added an extra WRT54G router I had lying around to cover the inside of my house. The router has one of its LAN ports hooked up to the data port on the PoE injector, and bridges from Ethernet to another AP-mode WiFi SSID that I connect to from inside the house. Once I set that up, throughput improved dramatically.
+After putting the main AP outside, facing away from my house, and then connecting to it from the other side of the house, the setup worked, but I got really low throughput. I attributed this to being exactly where the directional antenna in the AP wasn't pointing, and so I added an extra WRT54G router I had lying around to cover the inside of my house. The router has one of its LAN ports hooked up to the data port on the PoE injector, and bridges from Ethernet to another AP-mode WiFi SSID that I connect to from inside the house. Once I set that up, throughput improved dramatically.
 
 ##Software Components
 
@@ -49,7 +49,7 @@ The Nanostation AP runs the stock Ubiquiti firmware, and the WRT54G runs a horri
 
 ###cjdns Mesh Networking Software
 
-The most important sofware component is [cjdns](https://github.com/cjdelisle/cjdns#cjdns), which provides the mesh networking capability. Cjdns is used to connect the main meshnet node server to other systems on the Internet, as part of a mesh network. There are several useful services on this meshnet, incliding an IRC server, a free e-mail service, and [IPFS](https://ipfs.io). All addressing is IPv6, in the `fc00::/8` block reserved for [unique local addresses without a specified allocation method](https://en.wikipedia.org/wiki/IPv6_address#Unique_local_addresses). Cjdns allocates addresses by public key hash; all communication is end-to-end encrypted.
+The most important sofware component is [cjdns](https://github.com/cjdelisle/cjdns#cjdns), which provides the mesh networking capability. Cjdns is used to connect the main meshnet node server to other systems on the Internet, as part of a mesh network. There are several useful services on this meshnet, including an IRC server, a free e-mail service, and [IPFS](https://ipfs.io). All addressing is IPv6, in the `fc00::/8` block reserved for [unique local addresses without a specified allocation method](https://en.wikipedia.org/wiki/IPv6_address#Unique_local_addresses). Cjdns allocates addresses by public key hash; all communication is end-to-end encrypted.
 
 Cjdns is configured for Ethernet auto-peering on all interfaces, with this `ETHInterface` stanza in the `interfaces` section of `/etc/cjdroute.conf`:
 
@@ -66,9 +66,9 @@ Cjdns is configured for Ethernet auto-peering on all interfaces, with this `ETHI
 
 This configures the cjdns daemon to send out raw broadcast Ethernet frames attempting to peer with other nodes on the local network, and accept such peering requests itself. This means that if any other similarly-configured cjdns nodes (like my laptop) connect to the meshnet WiFi network, they will automatically peer with the meshnet server node and have meshnet connectivity.
 
-###radvd IPv6 Router Advertisment Daemon
+###radvd IPv6 Router Advertisement Daemon
 
-Clients that don't run cjdns can still connect to meshnet hosts, by using the meshnet server as a NAT-ing IPv6 router. To this end, the system advertizes a private IPv6 subnet of `fdfc::/64` to everyone who connects to the WiFi network.
+Clients that don't run cjdns can still connect to meshnet hosts, by using the meshnet server as a NAT-ing IPv6 router. To this end, the system advertises a private IPv6 subnet of `fdfc::/64` to everyone who connects to the WiFi network.
 
 This is accomplished with the following stanza in `/etc/radvd.conf`:
 
@@ -102,7 +102,7 @@ iface wlan0 inet6 static
 
 I also gave it an IPv4 address, to run the captive portal.
 
-Here's the `/etc/wpa_supplicant.conf` that tells it to actually connect to the correct network (in this case, `SantaCruzMeshnet2`, which is broadcast by the WRT54G). It's a bit odd to use WPASupplicant to connect to an open network, but that's how I got it working, and once I got it working I didn't want to poke it.
+Here's the `/etc/wpa_supplicant.conf` that tells it to actually connect to the correct network (in this case, `SantaCruzMeshnet2`, which is broadcast by the WRT54G). It's a bit odd to use wpa_supplicant to connect to an open network, but that's how I got it working, and once I got it working I didn't want to poke it.
 
 ```
 network={
@@ -114,7 +114,7 @@ network={
 
 ###DHCP Server
 
-In order to explain to people what sort of network they're connected to, I need some kind of captive portal, which will redirect web pages (over IPv4) to a welcome page. Unlike real captive portals, I don't eventually end up granting Internet access, so there's no need to mkake the functionality turn on and off.
+In order to explain to people what sort of network they're connected to, I need some kind of captive portal, which will redirect web pages (over IPv4) to a welcome page. Unlike real captive portals, I don't eventually end up granting Internet access, so there's no need to make the captivating functionality turn on and off.
 
 I also need to hand out IPv4 addresses to weird clients that will be upset if they can't get an IPv4 address and only have IPv6.
 
@@ -168,7 +168,7 @@ iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.2.0.
 iptables -t filter -A FORWARD -m mark --mark 99 -j DROP
 ```
 
-Basically, I'm taking all packets that comne in over IPv4 on the WiFi subnet and mark them with mark number 99. Then, any marked packets to port 80 get re-written to go to the meshnet server, while any other marked packets get dropped. This effectively man-in-the-middles my server between clients and whatever web server they were trying to access, and so they get my page instead of the page they wanted.
+Basically, I'm taking all packets that come in over IPv4 on the WiFi subnet and mark them with mark number 99. Then, any marked packets to port 80 get re-written to go to the meshnet server, while any other marked packets get dropped. This effectively man-in-the-middles my server between clients and whatever web server they were trying to access, and so they get my page instead of the page they wanted.
 
 This only works if `net.ipv4.ip_forward=1` is set in `/etc/sysctl.conf`, to enable IPv4 routing.
 
