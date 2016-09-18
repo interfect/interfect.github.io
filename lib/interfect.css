@@ -1,0 +1,5 @@
+/* Icons need to be icon-sized */
+img.icon {
+    display: inline;
+    height: 1em;
+}
