@@ -100,6 +100,14 @@ function boltdown(markdown, target) {
         tableEl.className = 'table table-striped table-bordered';
     }
     
+    // Style images
+    var imageEls = target.getElementsByTagName('img');
+    for (var i=0, ii=imageEls.length; i<ii; i++) {
+        var imageEl = imageEls[i];
+        // Images should be responsive
+        imageEl.className = 'img-responsive';
+    }
+    
     // Show the element
     target.style.display = '';
 }
