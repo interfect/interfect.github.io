@@ -19,7 +19,9 @@ Second, there's no WiFi- or IP-level mesh involved; everything is one big bridge
 
 ##Hardware Components
 
-The system I have has three main pieces of hardware: a meshnet node on a server under my desk, a Ubiquiti Nanostation WiFi access point outside, and a WRT54G to attach them together.
+The system I have has three main pieces of hardware: a meshnet node on a server under my desk, a Ubiquiti Nanostation WiFi access point outside, and a WRT54G to attach them together. Here is an aggressively terrible diagram of my network setup, made using MS Paint.
+
+![A diagram showing the meshnet, my meshnet server node, a WRT54G, a PoE injector, and a Ubiquiti Nanostation connected together in that order.](/images/003/aggressively-terrible-diagram.png)
 
 ###Meshnet Node
 
