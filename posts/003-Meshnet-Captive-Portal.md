@@ -1,6 +1,6 @@
 # Meshnet Captive Portal
 
-As a Meshnet Enthusiast, I've grabbed a couple of WiFi routers (including a nice Ubiquiti Nanostation that can happily live outside) and built myself a corner of the [fc00 cjdns meshnet](https://www.fc00.org/). The design goals were:
+As a Meshnet Enthusiast, I've grabbed a couple of WiFi routers (including a nice Ubiquiti Nanostation that can happily live outside) and built myself a corner of the [fc00 cjdns meshnet](https://www.fc00.org/), also known as Hyperboria. The design goals were:
 
 * Anyone should be able to come by and connect and get access to the meshnet, without installing anything.
 * Nobody should be able to get access to the Internet in such a way that their actions might reflect poorly on me.
@@ -56,14 +56,14 @@ The most important sofware component is [cjdns](https://github.com/cjdelisle/cjd
 Cjdns is configured for Ethernet auto-peering on all interfaces, with this `ETHInterface` stanza in the `interfaces` section of `/etc/cjdroute.conf`:
 
 ```
-        "ETHInterface":
-        [
-            {
-                // Bind to this device.
-                "bind": "all", 
-                "beacon": 2
-             }
-        ]
+"ETHInterface":
+[
+    {
+        // Bind to this device.
+        "bind": "all", 
+        "beacon": 2
+     }
+]
 ```
 
 This configures the cjdns daemon to send out raw broadcast Ethernet frames attempting to peer with other nodes on the local network, and accept such peering requests itself. This means that if any other similarly-configured cjdns nodes (like my laptop) connect to the meshnet WiFi network, they will automatically peer with the meshnet server node and have meshnet connectivity.
