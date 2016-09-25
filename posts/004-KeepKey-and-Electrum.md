@@ -47,7 +47,7 @@ I decided to set up my KeepKey wallet with Electrum, because I like Electrum and
 
 I used Electrum 2.6.4, but you probably want the latest version:
 
-```
+```bash
 sudo pip install electrum --upgrade
 ```
 
@@ -57,7 +57,7 @@ Setup in Electrum was basically a matter of hitting **File -> New/Restore** in t
 
 [It turns out](https://github.com/spesmilo/electrum/issues/1843) you need not only Electrum, but also the [KeepKey Python module](https://github.com/keepkey/python-keepkey) and maybe some udev rules installed. Borrowing from the [official KeepKey documentation](https://support.keepkey.com/support/solutions/articles/6000090262-electrum-keepkey-integration-ubuntu-linux-):
 
-```
+```bash
 # You might need all this stuff to build the module
 sudo apt-get install python-dev python-setuptools cython libusb-1.0-0-dev libudev-dev
 sudo pip install python-keepkey
@@ -122,7 +122,7 @@ The KeepKey needs to know what sequence of key derivations do do when asked for 
 
 If you installed `python-keepkey` like I told you to, you have a `keepkeyctl` command that you can use to derive keys yourself. Make sure Electrum is closed, and do something like this:
 
-```
+```bash
 keepkeyctl get_address -n "44'/0'/0'/0/0" -c Bitcoin -d
 ```
 
@@ -130,7 +130,7 @@ After entering your PIN on the numpad on your keyboard (or by complicated mental
 
 The path starts with a `44'` and has the structure it does because it's a [BIP44 path](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki). BIP44 basically specifies where in hierarchical deterministic wallet key tree space a wallet ought to derive its various keys. Basically it looks like this:
 
-```
+```markdown
 m / 44' / coin_type' / account' / change / address_index
 ```
 
@@ -138,7 +138,7 @@ For Bitcoin, `coin_type` is 0. The `account` parameter lets you maintain several
 
 Interestingly, Electrum [doesn't use the BIP44 structure internally](https://github.com/spesmilo/electrum/issues/1604); Native Electrum wallets are BIP32 hierarchical deterministic wallets, but they use a [simpler derivation path](https://bitcoin.stackexchange.com/questions/36955/what-bip32-derivation-path-does-electrum-use) of just:
 
-```
+```markdown
 m / change / address_index
 ```
 
