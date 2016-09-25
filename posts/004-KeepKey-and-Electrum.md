@@ -55,7 +55,7 @@ Setup in Electrum was basically a matter of hitting **File -> New/Restore** in t
 
 ![A list index out of range error.](/images/004/error.png)
 
-[It turns out](https://github.com/spesmilo/electrum/issues/1843) you need not only Electrum, but also the [KeepKey Python module](https://github.com/keepkey/python-keepkey) and maybe sone udev rules installed. Borrowing from the [official KeepKey documentation](https://support.keepkey.com/support/solutions/articles/6000090262-electrum-keepkey-integration-ubuntu-linux-):
+[It turns out](https://github.com/spesmilo/electrum/issues/1843) you need not only Electrum, but also the [KeepKey Python module](https://github.com/keepkey/python-keepkey) and maybe some udev rules installed. Borrowing from the [official KeepKey documentation](https://support.keepkey.com/support/solutions/articles/6000090262-electrum-keepkey-integration-ubuntu-linux-):
 
 ```
 # You might need all this stuff to build the module
