@@ -133,7 +133,7 @@ function rewriteLink(link) {
         link.hostname == window.location.hostname &&
         link.port == window.location.port &&
         (link.pathname.toLowerCase().endsWith('.md') ||
-        link.pathname == "" && link.hash != "")) {
+        link.pathname == window.location.pathname && link.hash != "")) {
         // This is a relative link to a markdown file, or to a bare #hash in this document, and should open in this viewer
         console.log('Rewriting:' + link.protocol + ', ' + link.hostname + ', ' +
             link.port + ', ' + link.pathname + ', ' + link.hash)
