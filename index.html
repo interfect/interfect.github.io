@@ -137,7 +137,11 @@ function rewriteLink(link) {
         // This is a relative link to a markdown file, or to a bare #hash in this document, and should open in this viewer
         console.log('Rewriting:' + link.protocol + ', ' + link.hostname + ', ' +
             link.port + ', ' + link.pathname + ', ' + link.hash)
-        if(link.pathname.length > 0 && link.pathname[0] != '/') {
+        if(link.pathname == window.location.pathname) {
+            // It's probably a relative link in this document
+            // Correct its path name to be to this markdown file, using the global filename.
+            link.pathname = filename
+        } else if(link.pathname.length > 0 && link.pathname[0] != '/') {
             // It's a relative link, not relative to the root.
             // Make it absolute based on the directory we're in.
             link.pathname = dirname + link.pathname
@@ -151,7 +155,6 @@ function rewriteLink(link) {
     } else {
         console.log('Not rewriting: ' + link.protocol + ', ' + link.hostname + ', ' +
             link.port + ', ' + link.pathname + ', ' + link.hash)
-        console.log(window.location.pathname)
         // Make everything else target="_blank", to cover up our lack of scroll
         // restore support on back button press.
         link.target="_blank"
