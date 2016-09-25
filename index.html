@@ -148,7 +148,7 @@ function rewriteLink(link) {
         link.pathname = window.location.pathname
         console.log('Rewritten link: ' + link.href)
     } else {
-        console.log('Not rewriting: ' + link.href)
+        console.log('Not rewriting: ', link)
         // Make everything else target="_blank", to cover up our lack of scroll
         // restore support on back button press.
         link.target="_blank"
