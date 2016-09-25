@@ -135,7 +135,7 @@ function rewriteLink(link) {
         (link.pathname.toLowerCase().endsWith('.md') ||
         link.pathname == "" && link.hash != "")) {
         // This is a relative link to a markdown file, or to a bare #hash in this document, and should open in this viewer
-        console.log('Rewriting: ' + link.href)
+        console.log('Rewriting:', link)
         if(link.pathname.length > 0 && link.pathname[0] != '/') {
             // It's a relative link, not relative to the root.
             // Make it absolute based on the directory we're in.
