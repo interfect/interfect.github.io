@@ -132,7 +132,6 @@ function rewriteLink(link) {
     if(link.protocol == window.location.protocol &&
         link.hostname == window.location.hostname &&
         link.port == window.location.port &&
-        link.pathname != window.location.pathname &&
         link.pathname.toLowerCase().endsWith('.md')) {
         // This is a relative link to a markdown file, and should open in this viewer
         console.log('Rewriting: ' + link.href)
