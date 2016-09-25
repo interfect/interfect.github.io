@@ -132,8 +132,9 @@ function rewriteLink(link) {
     if(link.protocol == window.location.protocol &&
         link.hostname == window.location.hostname &&
         link.port == window.location.port &&
-        link.pathname.toLowerCase().endsWith('.md')) {
-        // This is a relative link to a markdown file, and should open in this viewer
+        (link.pathname.toLowerCase().endsWith('.md') ||
+        link.pathname == "" && link.hash != "")) {
+        // This is a relative link to a markdown file, or to a bare #hash in this document, and should open in this viewer
         console.log('Rewriting: ' + link.href)
         if(link.pathname.length > 0 && link.pathname[0] != '/') {
             // It's a relative link, not relative to the root.
