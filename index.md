@@ -4,6 +4,8 @@ This is my blog-like object, where I store all of my possibly useful notes.
 
 ## Recent Posts
 
+**[Jobs for Novaks](posts/006-Jobs-for-Novaks.md)**, in which I list some interesting companies I might weant to work at someday.
+
 **[Novak's Teach Other People `git annex` in 60 Minutes Or Less](posts/005-Novaks-Teach-Other-People-git-annex-in-60-Minutes-Or-Less.md)**, in which I explain the logic behind `git annex` and how you can use it to move your files around.
 
 **[KeepKey and Electrum](posts/004-KeepKey-and-Electrum.md)**, in which I unbox a KeepKey hardware Bitcoin wallet and explain a bit about how it works and how to use it with Electrum.
