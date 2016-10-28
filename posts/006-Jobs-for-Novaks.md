@@ -14,4 +14,4 @@ Here is a list of companies I might want to work at. Some of these won't work ge
 * I know a guy at [DNANexus](https://www.dnanexus.com/careers) where they do data analysis on cloud infrastructure.
 * I know a lady at [Agilent](http://careers.agilent.com/) where they make microarrays.
 * These startup people have a [whole list of companies](https://angel.co/bioinformatics).
-* I could alspo work for some kind of as-yet-nonexistent biohacker cooperative.
+* I could also work for some kind of as-yet-nonexistent biohacker cooperative.
