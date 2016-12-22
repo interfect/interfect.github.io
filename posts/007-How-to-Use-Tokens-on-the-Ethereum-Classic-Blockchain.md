@@ -34,13 +34,13 @@ Start up your wallet and wait. If using Ethereum Classic Mist, you may need to c
 
 Eventually, you should get to some sort of screen about downloading blocks. On OS X Mist, it looks something like this:
 
-![Ethereum Classic Syncing Window](/images/007/chaindownload.png)
+![Ethereum Classic Syncing Window](/images/007/chaindownload-small.png)
 
 You may get put through a wizard on first startup. Make sure to select the "main network". You are unlikely to have a pre-sale file. When prompted for a password, enter something you can remember; it will be used to encrypt your wallet file on disk. There are also tutorials about how to issue your own tokens and how to raise money through crowdsales.
 
-Syncing the blockchain can take anywhere from half an hour to over a day, depending on your Internet connection and your computer's speed. Having an SSD can help make it faster. While syncing, you are not only downloading block data, but also repeating the execution of all the smart contracts on the Ethereum Classic chain, and making sure that you get the same results from those computations as everyone else. In essence, your computer is verifying that the rest of the world is playing by the rules; it will check for and refuse to accept blocks containing any frauds, thefts, or appropriations of tokens that contravene the rules of deployed smart contracts. (However, frauds, thefts, and appropriations of tokens that *obey* the rules of deployed smart contracts will be accepted quite happily.)
+Syncing the blockchain can take anywhere from an hour to over a day, depending on your Internet connection and your computer's speed. Having an SSD can help make it faster. While syncing, you are not only downloading block data, but also repeating the execution of all the smart contracts on the Ethereum Classic chain, and making sure that you get the same results from those computations as everyone else. In essence, your computer is verifying that the rest of the world is playing by the rules; it will check for and refuse to accept blocks containing any frauds, thefts, or appropriations of tokens that contravene the rules of deployed smart contracts. (However, frauds, thefts, and appropriations of tokens that *obey* the rules of deployed smart contracts will be accepted quite happily.)
 
-During the sync process, it is OK to close Mist. When you come back later and open it again, the sync should resume where it left off.
+During the sync process, it is OK to close Mist. When you come back later and open it again, the sync should resume where it left off. In fact, you may need to do this if it gets stuck; it's still beta software.
 
 ## Step 4: Create an Account
 
@@ -62,11 +62,11 @@ You need to add your token contract to your Mist, so that you can look at and in
 
 Click on "Contracts" at the top right of the Mist window:
 
-![Contracts interface](/images/007/contracts.png)
+![Contracts interface](/images/007/contracts-small.png)
 
 Then scroll all the way down to the bottom, look under "Custom Tokens", and click "Watch Token". Paste in the token's address. and the other details should populate automatically:
 
-![Adding the NovakBucks token](/images/007/watch.png)
+![Adding the NovakBucks token](/images/007/watch-small.png)
 
 Then click "OK". The token should now show up under "Custom Tokens", along with your balance. But clicking on it there doesn't really do anything; it just lets you edit the token information.
 
@@ -79,11 +79,11 @@ You can use the same contract address, along with the ABI for the token contract
 
 To do this, go back to the main "Contracts" page, and hit "Watch Contract" under "Custom Contracts". Then fill in the contract details again, but this time including the ABI.
 
-![Adding the NovakBucks contract](/images/007/watchcontract.png)
+![Adding the NovakBucks contract](/images/007/watchcontract-small.png)
 
 Then click "OK". The contract should now show up under "Cussom Contracts", and you can click on it to get into the contract's UI. Make sure to scroll down on the contract's page to get to the actual controls that do things. You can read from the contract on the left, and send commands to the contract manually with the interface on the right:
 
-![Interrogating NovakBucks](/images/007/contractui.png)
+![Interrogating NovakBucks](/images/007/contractui-small.png)
 
 If you are working with a token that is *not* ERC-20 compliant, you will need to add it as a contract rather than a token, and you will need to use this generic contract UI to manipulate it.
 
@@ -99,7 +99,7 @@ Whoever sold you the token might also be able to sell you the ETC to move it, bu
 
 Shapeshift is a service that quickly converts between cryptocurrencies. To buy ETC, go to [http://shapeshift.io/](http://shapeshift.io/), and set the "to" currency to "Ether Classic". The "from" currency should be whatever other cryptocurrency you actually have (for example, Bitcoin):
 
-![Shapeshift BTC to ETC](/images/007/shapeshift.png)
+![Shapeshift BTC to ETC](/images/007/shapeshift-small.png)
 
 Hit "Continue". On the next screen, you can enter your Ethereum Classic address (copied from Mist again), and your return address for the currency you're selling, in case the money needs to be sent back. Once you start the transaction, Shapeshift should give you an address to send to. A few minutes after you send your currency to sell, Shapeshift should send you your ETC.
 
@@ -109,17 +109,17 @@ At this point, you should make sure to record the transaction for your records. 
 
 Now that you have a supply of your chosen token, and some ETC with which to pay transaction fees, you probably want to send some to someone else. If your token is ERC-20 compliant, and you added it as a token in Mist, this should be super easy. Just go to "Wallets" on the upper left, and click on your account. If you have any tokens, your token should show up under the account name, together with your balance, and a "Send" button (which will only appear when you hover over the token entry):
 
-![View your tokens](/images/007/viewtokens.png)
+![View your tokens](/images/007/viewtokens-small.png)
 
 To send someone tokens, you need *their* address. Once you have it, click on the "Send" button, and then fill in the details of the transaction: the destination address and the number of tokens to send:
 
-![Send your tokens](/images/007/sendtokens.png)
+![Send your tokens](/images/007/sendtokens-small.png)
 
 Then ignore the "Add Data" option and the fee slider, and scroll all the way to the bottom and hit "Send".
 
 Mist will present you with a window to review the details of the transaction. It's a bit cryptic, and in particular it will have a little arrow pointing to the address of the token contract, and not the address you are sending tokens to. This is because you are really telling the contract to transfer ownership of the tokens to someone else. The *actual* "to" address will show up embedded in the cryptic hex data at the bottom, along with the amount (in hex):
 
-![Confirm your transaction](/images/007/confirmsend.png)
+![Confirm your transaction](/images/007/confirmsend-small.png)
 
 When you are happy with the transaction, including the fee you have to pay in Ether, enter your account password and hit "Send". After a few seconds, your transaction will be added to the Ethereum Classic blockchain, and your token balance should go down. If you [added your token as a contract](#extra-add-the-token-as-a-contract), you can enter the address you sent to under `balanceOf` in the contract UI to check the recipient's new balance.
 
