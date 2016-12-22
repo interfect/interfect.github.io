@@ -4,6 +4,8 @@ This is my blog-like object, where I store all of my possibly useful notes.
 
 ## Recent Posts
 
+**[How to Use Tokens on the Ethereum Classic Blockchain](posts/007-How-to-Use-Tokens-on-the-Ethereum-Classic-Blockchain.md)**, in which I explain how you too can become a proud user of custom cryptocurrency tokens, such as the much sought-after NovakBucks.
+
 **[Jobs for Novaks](posts/006-Jobs-for-Novaks.md)**, in which I list some interesting companies I might weant to work at someday.
 
 **[Novak's Teach Other People `git annex` in 60 Minutes Or Less](posts/005-Novaks-Teach-Other-People-git-annex-in-60-Minutes-Or-Less.md)**, in which I explain the logic behind `git annex` and how you can use it to move your files around.
