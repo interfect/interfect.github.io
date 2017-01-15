@@ -164,7 +164,7 @@ I also have `/etc/rc.local` commands to set up the captive portal. They look lik
 iptables -t mangle -A PREROUTING -s 10.2.0.0/24 -j MARK --set-mark 99
 
 # Steal all web traffic being routed from the 10.2.0.* subnet
-iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.2.0.2
+iptables -t nat -A PREROUTING -m mark --mark 99 -p tcp --dport 80 -j DNAT --to-destination 10.2.0.2
 
 # Drop anything else getting forwarded
 iptables -t filter -A FORWARD -m mark --mark 99 -j DROP
@@ -184,3 +184,4 @@ Right now, the system mostly works: people will get IPv4 and IPv6 addresses when
 * **Captive Portal Redirect**: Right now the captive portal doesn't do any HTTP redirects, so requests for `http://example.com` will wind up with the captive portal page displayed, but appearing to come from the `example.com` domain. Also, requests for things other than the root of the domain, like `http://example.com/thingy.html` will 404, because there's no `thingy.html` on my server. Both of these ought to redirect to `http://10.2.0.2/index.html`.
 * **Android Experience Smoothing**: Potentially relatedly, Android doesn't display the little "log into WiFi network" prompt it displays for normal captive-portal-protected sites. This may be due to the lack of redirect, or it may be because it detects there's no log in form somehow.
 * **DNS Tunneling Prevention**: Because I expose a normal DNS server, it's possible to tunnel out to the Internet with something like [iodine](http://code.kryo.se/iodine/). However, since anyone tunneling over iodine is going to have to go through a proxy they control at the other end, I don't find it likely that I will be blamed for any nefarious crimes being tunneled over the DNS system, and so finding a way to prevent it isn't a priority for me.
+* **Missing `iptables` Rules**: I have had my `iptables` rules added by `/etc/rc.local` go missing on me during the time the system is up. I've unistalled the `ufw` package (`sudo apt-get remove ufw`), which is installed by default on Ubuntu and wants to manage your iptables rules for you. Perhaps that will solve the problem.
