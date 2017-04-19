@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="lib/strapdown.css" />
 <link rel="stylesheet" href="lib/interfect.css" />
 
-<!-- This migth not be that useful to subscribe to, but it's super easy to have -->
+<!-- This might not be that useful to subscribe to, but it's super easy to have -->
 <link rel="alternate" type="application/atom+xml" href="https://github.com/interfect/interfect.github.io/commits/master.atom" title="Blog Commits"/>
 
 </head>
@@ -59,8 +59,10 @@ We have a navbar!
     </div>
 </noscript>
 
-<!-- Here is where the rendered markdown goes -->
-<div class="container" id="content"></div>
+<div class="container">
+    <!-- Here is where the rendered markdown goes -->
+    <div id="content" class="maintext col-lg-8"></div>
+</div>
 
 <footer class="footer">
     <div class="container">
@@ -89,6 +91,12 @@ marked.setOptions({
     breaks: false,
     pedantic: false,
 })
+
+// Turn off cacheing of markdown files because jQuery doesn't make requests and
+// check etags at all.
+$.ajaxSetup({
+    cache: false
+});
 
 // Do just enough of what strapdown does to stick markdown in an element.
 // Takes a markdown string and a target element
