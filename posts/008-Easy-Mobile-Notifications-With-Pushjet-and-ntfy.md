@@ -26,7 +26,7 @@ This is how I made it actually work:
     pip install --user ntfy
     ```
 
-2. **Create a Pushjet service** by going to [the Pushjet API docs for service creation](http://docs.pushjet.io/docs/creating-a-new-service) and filling out the "Try It Out" form. You should get some response JSON like this:
+2. **Create a Pushjet service** by going to [the Pushjet API docs for service creation](http://docs.pushjet.io/docs/creating-a-new-service) and filling out the "Try It Out" form. You don't need an icon, but I used [this one by Nikita Golubev](http://www.flaticon.com/free-icon/programming_363216). You should get some response JSON like this:
     
     ```
     {
