@@ -65,7 +65,7 @@ This is how I made it actually work:
     # notify: send ntfy messages with a reasonable-length default title
     set -e
 
-    ntfy -t `hostname` send "$@"
+    ntfy -t `hostname` send "${*}"
     ```
 
 8. Whenever you do a long-running job, **tack a `notify 'My job is done!'` onto the end**.
