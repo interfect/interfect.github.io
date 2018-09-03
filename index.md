@@ -4,6 +4,8 @@ This is my blog-like object, where I store all of my possibly useful notes.
 
 ## Recent Posts
 
+**[E-mail with RainLoop and Docker Compose](posts/010-E-mail-with-RainLoop-and-Docker-Compose.md)**, in which I describe my new e-mail client.
+
 **[Ride the Lightning: How to use the Lightning Network on the Bitcoin Mainnet](posts/009-Ride-the-Lightning.md)**, in which I explain how to set up `lightningd`.
 
 **[Easy Mobile Notifications with Pushjet and `ntfy`](posts/008-Easy-Mobile-Notifications-With-Pushjet-and-ntfy.md)**, in which I explain how to make your phone tell you about things that happen on your computer.
