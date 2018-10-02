@@ -128,11 +128,13 @@ lightning-cli connect fc8f:1cb7:fedd:dfd2:fd9c:96a0:e54d:1467 9735 03bcf9c436443
 
 However, I haven't funded it, so it won't actually be able to open any channels.
 
+**UPDATE: This node no longer exists. However, there are many more nodes nowdays. Use one of those.**
+
 If you aren't on cjdns, you can set up two nodes and connect one to the other using the IP and port, and the "id" value from `lightning-cli getinfo`. You can see if you are connected with `lightning-cli getpeers`.
 
 ## Step 4: Insert Coins
 
-Getting money into `lightningd` is still hard. According to the [c-lighning docs](https://github.com/ElementsProject/lightning#opening-a-channel-on-the-bitcoin-testnet), you do something like:
+Getting money into `lightningd` is still hard. According to the [c-lightning docs](https://github.com/ElementsProject/lightning#opening-a-channel-on-the-bitcoin-testnet), you do something like:
 
 1. Get an address for your Lightning node with `lightning-cli newaddr`.
 2. Send funds to that address. Get the transaction ID.
