@@ -4,6 +4,8 @@ This is my blog-like object, where I store all of my possibly useful notes.
 
 ## Recent Posts
 
+**[You Only Mine Once: the Minecraft Server where you Really Shouldn't Die](posts/011-You-Only-Mine-Once.md)**, in which I plug the premium permaban paradise that is *You Only Mine Once*.
+
 **[E-mail with RainLoop and Docker Compose](posts/010-E-mail-with-RainLoop-and-Docker-Compose.md)**, in which I describe my new e-mail client.
 
 **[Ride the Lightning: How to use the Lightning Network on the Bitcoin Mainnet](posts/009-Ride-the-Lightning.md)**, in which I explain how to set up `lightningd`.
@@ -12,7 +14,7 @@ This is my blog-like object, where I store all of my possibly useful notes.
 
 **[How to Use Tokens on the Ethereum Classic Blockchain](posts/007-How-to-Use-Tokens-on-the-Ethereum-Classic-Blockchain.md)**, in which I explain how you too can become a proud user of custom cryptocurrency tokens, such as the much sought-after NovakBucks.
 
-**[Jobs for Novaks](posts/006-Jobs-for-Novaks.md)**, in which I list some interesting companies I might weant to work at someday.
+**[Jobs for Novaks](posts/006-Jobs-for-Novaks.md)**, in which I list some interesting companies I might want to work at someday.
 
 **[Novak's Teach Other People `git annex` in 60 Minutes Or Less](posts/005-Novaks-Teach-Other-People-git-annex-in-60-Minutes-Or-Less.md)**, in which I explain the logic behind `git annex` and how you can use it to move your files around.
 
