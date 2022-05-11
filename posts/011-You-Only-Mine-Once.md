@@ -1,5 +1,7 @@
 # You Only Mine Once: the Minecraft Server where you Really Shouldn't Die
 
+> Editor's Note: Nobody ever joined this server, for reasons that are, perhaps, obvious in hindsight.
+
 I used to play a lot of Minecraft. At one point, my name could be found in the [early players list](https://www.reddit.com/r/Minecraft/comments/m9qpl/list_of_minecrafts_early_players/) that was distributed with certain versions of the game. Being implemented in Java, it was one of the few commercial games available for Linux at the time, and it was quite easy to mod by cramming things into its JAR file.
 
 ## The State of the Game
