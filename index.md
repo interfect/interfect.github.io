@@ -4,6 +4,8 @@ This is my blog-like object, where I store all of my possibly useful notes.
 
 ## Recent Posts
 
+**[Stop Using `Acquire::BrokenProxy`](posts/012-Stop-Using-Acquire-BrokenProxy.md)**, in which I explain how `Acquire::BrokenProxy` has the whole Internet fooled.
+
 **[You Only Mine Once: the Minecraft Server where you Really Shouldn't Die](posts/011-You-Only-Mine-Once.md)**, in which I plug the premium permaban paradise that is *You Only Mine Once*.
 
 **[E-mail with RainLoop and Docker Compose](posts/010-E-mail-with-RainLoop-and-Docker-Compose.md)**, in which I describe my new e-mail client.
